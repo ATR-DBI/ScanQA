@@ -147,7 +147,7 @@ def get_scanqa(args):
             data["scene_id"] = scene_id
             scanqa.append(data)
     else:    
-        SCANQA_VAL = json.load(open(os.path.join(CONF.PATH.SCANQA, project_name + "_"+args.val_type+".json")))
+        SCANQA_VAL = json.load(open(os.path.join(CONF.PATH.SCANQA, project_name + "_val.json")))
         scanqa = SCANQA_TRAIN if args.use_train else SCANQA_VAL
         scene_list = sorted(list(set([data["scene_id"] for data in scanqa])))
         if args.num_scenes != -1:
@@ -195,9 +195,9 @@ def eval_qa(args):
 
     # evaluate
     print("evaluating...")
-    score_path = os.path.join(CONF.PATH.OUTPUT, args.folder, "scores."+args.val_type+".p")
+    score_path = os.path.join(CONF.PATH.OUTPUT, args.folder, "score.val.pkl")
 
-    pred_path = os.path.join(CONF.PATH.OUTPUT, args.folder, "predictions."+args.val_type+".p")
+    pred_path = os.path.join(CONF.PATH.OUTPUT, args.folder, "pred.val.pkl")
     gen_flag = (not os.path.exists(score_path)) or args.force or args.repeat > 1
     if gen_flag:
         ref_acc_all = []
@@ -279,6 +279,19 @@ def eval_qa(args):
             # save the last predictions
             with open(pred_path, "wb") as f:
                 pickle.dump(predictions, f)
+                
+            # convert pkl to json
+            conved=[]
+            for scene_name, scene in predictions.items():
+                for qid, instance in scene.items():
+                    instance = {k:v.tolist() if isinstance(v,np.ndarray) else v for k,v in instance.items()}
+                    instance.update({'scene_id': scene_name, 'question_id': qid})
+                    instance['answer_top10'] = instance['pred_answers_at10']
+                    del instance['pred_answers_at10']
+                    instance['bbox'] = instance['pred_bbox']
+                    del instance['pred_bbox']
+                    conved.append(instance)
+            json.dump(conved,open(pred_path[:-4]+'.json','w'))
 
             # save to global
             ref_acc_all.append(ref_acc)
@@ -393,7 +406,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--folder", type=str, help="Folder containing the model", required=True)
     parser.add_argument("--gpu", type=str, help="gpu", default="0")
-    parser.add_argument("--val_type", type=str, help="val or test_w_obj", default="val")
     parser.add_argument("--batch_size", type=int, help="batch size", default=16)
     parser.add_argument("--num_scenes", type=int, default=-1, help="Number of scenes [default: -1]")
     parser.add_argument("--force", action="store_true", help="enforce the generation of results")

@@ -178,7 +178,7 @@ class ScannetQADataset(Dataset):
             object_names = None            
 
         question_id = self.scanqa[idx]['question_id']
-        answers = self.scanqa[idx]['answers']
+        answers = self.scanqa[idx].get('answers', [])
 
         answer_cats = np.zeros(self.num_answers) 
         answer_inds = [self.answer_vocab.stoi(answer) for answer in answers]

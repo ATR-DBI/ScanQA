@@ -26,25 +26,29 @@ Please refer to [data preparation](docs/dataset.md) for preparing the ScanNet v2
   For more training options, please run `scripts/train.py -h`.
 
 ### Inference
-- Evaluation of trained ScanQA models with the val (or test_w_obj) dataset:
+- Evaluation of trained ScanQA models with the val dataset:
 
   ```shell
-  python scripts/eval.py --folder <folder_name> --qa --val_type val --force
+  python scripts/eval.py --folder <folder_name> --qa --force
   ```
 
   <folder_name> corresponds to the folder under outputs/ with the timestamp + <tag_name>.
-
-- Prediction with the test dataset:
-
-  ```shell
-  python scripts/predict.py --folder <folder_name>
-  ```
 
 - Scoring with the val dataset:
 
   ```shell
   python scripts/score.py --folder <folder_name>
   ```
+
+- Prediction with the test dataset:
+
+  ```shell
+  python scripts/predict.py --folder <folder_name> --test_type test_w_obj (or test_wo_obj)
+  ```
+
+  The [ScanQA benchmark](https://eval.ai/web/challenges/challenge-page/1715/overview) is hosted on [EvalAI](https://eval.ai/). 
+  Please submit the `outputs/<folder_name>/pred.test_w_obj.json` and `pred.test_wo_obj.json` to this site for the evaluation of the test with and without objects.
+
 
 ## Citation
 If you find our work helpful for your research. Please consider citing our paper.

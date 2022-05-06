@@ -50,7 +50,7 @@ def construct_bbox_corners(center, box_size):
     return corners_3d
 
 
-def get_eval(data_dict, config, use_lang_classifier=False, use_oracle=False, use_cat_rand=False, use_best=False, post_processing=None):
+def get_eval(data_dict, config, answer_vocab=None, use_reference=False, use_lang_classifier=False, use_oracle=False, use_cat_rand=False, use_best=False, post_processing=None):
     """ Loss functions
     Args:
         data_dict: dict
@@ -243,5 +243,3 @@ def get_eval(data_dict, config, use_lang_classifier=False, use_oracle=False, use
     data_dict["sem_acc"] = (sem_match * data_dict["pred_mask"]).sum() / data_dict["pred_mask"].sum()
 
     return data_dict
-
-

@@ -203,7 +203,7 @@ if __name__=="__main__":
     #
     # val
     #
-    fin=os.path.join(CONF.PATH.OUTPUT, args.folder, 'predictions.val.p')
+    fin=os.path.join(CONF.PATH.OUTPUT, args.folder, 'pred.val.pkl')
     preds=pickle.load(open(fin,'rb'))
     preds={qid:value for scene,pred_scenes in preds.items() for qid,value in pred_scenes.items()} # simplify data format to dict[qid,pred]
     for _,pred in preds.items():

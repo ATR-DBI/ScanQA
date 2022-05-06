@@ -28,7 +28,6 @@ from utils.misc import overwrite_config
 from data.scannet.model_util_scannet import ScannetDatasetConfig
 
 project_name = "ScanQA_v1.0"
-SCANQA_TEST = json.load(open(os.path.join(CONF.PATH.SCANQA, project_name + "_test_wo_obj.json")))
 
 
 def get_dataloader(args, scanqa, all_scene_list, split, config):
@@ -134,7 +133,7 @@ def get_model(args, config):
     return model
 
 def get_scanqa(args):
-    scanqa = SCANQA_TEST
+    scanqa = json.load(open(os.path.join(CONF.PATH.SCANQA, project_name + "_"+args.test_type+".json")))
     scene_list = sorted(list(set([data["scene_id"] for data in scanqa])))
     scanqa = [data for data in scanqa if data["scene_id"] in scene_list]
     return scanqa, scene_list
@@ -249,7 +248,7 @@ def predict(args):
 
     # dump
     print("dumping...")
-    pred_path = os.path.join(CONF.PATH.OUTPUT, args.folder, "pred.json")
+    pred_path = os.path.join(CONF.PATH.OUTPUT, args.folder, "pred."+args.test_type+".json")
 
     with open(pred_path, "w") as f:
         json.dump(pred_bboxes, f, indent=4)
@@ -260,6 +259,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--folder", type=str, help="Folder containing the model")
     parser.add_argument("--gpu", type=str, help="gpu", default="0")
+    parser.add_argument("--test_type", type=str, help="test_w_obj or test_wo_obj", default="test_wo_obj")
     parser.add_argument("--batch_size", type=int, help="batch size", default=8)
     parser.add_argument("--seed", type=int, default=42, help="random seed")
     parser.add_argument("--no_nms", action="store_true", help="do NOT use non-maximum suppression for post-processing.")
