@@ -48,7 +48,8 @@ def get_dataloader(args, scanqa, all_scene_list, split, config):
     dataset = ScannetQADataset(
         scanqa=scanqa, 
         scanqa_all_scene=all_scene_list, 
-        use_unanswerable=(not args.no_unanswerable),
+        #use_unanswerable=(not args.no_unanswerable),
+        use_unanswerable=True,
         answer_cands=answer_cands,
         answer_counter=answer_counter,
         answer_cls_loss=args.answer_cls_loss,
@@ -241,7 +242,8 @@ def eval_qa(args):
                     data = get_eval(
                         data_dict=data, 
                         config=DC,
-                        answer_vocab=None if (not args.no_unanswerable) else dataset.answer_vocab,
+                        #answer_vocab=None if (not args.no_unanswerable) else dataset.answer_vocab,
+                        answer_vocab=None,
                         use_reference=True, 
                         use_lang_classifier=not args.no_lang_cls,
                         post_processing=POST_DICT
@@ -332,7 +334,7 @@ def eval_qa(args):
     if len(lang_acc) != 0:
         print("\nlanguage classification accuracy: {}".format(np.mean(lang_acc)))
     # ACCURACY for only answerable questions, not all questions
-    print("\n[answerbele] answer accuracy @1: {}, @10: {}".format(np.mean(answer_acc_at1), np.mean(answer_acc_at10)))
+    # print("\n[answerbele] answer accuracy @1: {}, @10: {}".format(np.mean(answer_acc_at1), np.mean(answer_acc_at10)))
 
 
 def eval_det(args):
@@ -411,7 +413,7 @@ if __name__ == "__main__":
     parser.add_argument("--force", action="store_true", help="enforce the generation of results")
     parser.add_argument("--seed", type=int, default=42, help="random seed")
     parser.add_argument("--repeat", type=int, default=1, help="Number of times for evaluation")
-    parser.add_argument("--no_unanswerable", action="store_true", help="Do'not use unanswerable examples")
+    #parser.add_argument("--no_unanswerable", action="store_true", help="Do'not use unanswerable examples")
     parser.add_argument("--no_nms", action="store_true", help="do NOT use non-maximum suppression for post-processing.")
     parser.add_argument("--use_train", action="store_true", help="Use train split in evaluation.") 
     parser.add_argument("--qa", action="store_true", help="evaluate the qa results")

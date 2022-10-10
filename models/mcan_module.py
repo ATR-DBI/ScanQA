@@ -278,6 +278,16 @@ class MCAN_ED(nn.Module):
         self.dec_list = nn.ModuleList([SGA(hidden_size, num_heads, pdrop) for _ in range(num_layers)])
 
     def forward(self, x, y, x_mask, y_mask):
+        
+        # print('lang_mask', x_mask)
+        # print()
+        # print('object_mask', y_mask)
+        # exit()        
+        # x_mask: 要素があるところがFalse, ないところがTrue
+        # [[[False, False, False, False, False, False, False, False, False, False,
+        #   False,  True,  True,  True]]],
+        #[[[False, False, False, False, False, False, False, False,  True,  True,
+        #    True,  True,  True,  True]]]],
         # Get hidden vector
         for enc in self.enc_list:
             x = enc(x, x_mask)
