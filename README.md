@@ -55,7 +55,7 @@ If you find our work helpful for your research. Please consider citing our paper
 ```bibtex
 @inproceedings{azuma_2022_CVPR,
   title={ScanQA: 3D Question Answering for Spatial Scene Understanding},
-  author={Azuma, Daichi and Miyanishi, Taiki and Kurita, Shuhei and Kawanabe, Motoki},
+  author={Azuma, Daichi and Miyanishi, Taiki and Kurita, Shuhei and Kawanabe, Motoaki},
   booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
   year={2022}
 }
@@ -68,4 +68,4 @@ We would like to thank [facebookresearch/votenet](https://github.com/facebookres
 ## License
 ScanQA is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License](LICENSE).
 
-Copyright (c) 2022 Daichi Azuma, Taiki Miyanishi, Shuhei Kurita, Motoki Kawanabe
+Copyright (c) 2022 Daichi Azuma, Taiki Miyanishi, Shuhei Kurita, Motoaki Kawanabe
